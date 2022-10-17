@@ -3,7 +3,8 @@ import { Teacher } from "../../../@types/teacher";
 import { Container, Description, Item, Name, NoList, Photo, Value } from "./List.style";
 
 interface ListProps {
-    teachers: Teacher[];
+    teachers: Teacher[],
+    onSelect: (teacher: Teacher) => void
 }
 
 const List = (props: ListProps) => {
@@ -19,7 +20,7 @@ const List = (props: ListProps) => {
                                 <Name>{name}</Name>
                                 <Value>{value.toLocaleString('pt-br', {minimumFractionDigits: 2, style: 'currency', currency: 'BRL'})} por hora</Value>
                                 <Description>{description}</Description>
-                                <Button sx={{width: '70%'}}>Marcar aula com {name}</Button>
+                                <Button onClick={() => props.onSelect(teacher)} sx={{width: '70%'}}>Marcar aula com {name}</Button>
                             </div>
                         </Item>
                     );

@@ -1,44 +1,61 @@
-import { Box } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, Grid, Snackbar, TextField } from '@mui/material'
 import type { NextPage } from 'next'
-import { Teacher } from '../src/@types/teacher'
 import List from '../src/components/Header/List/List'
+import { useIndex } from '../src/hooks/pages/useIndex'
 
 const Home: NextPage = () => {
-  const teachers: Teacher[] = [
-    {
-      id: 1,
-      name: "Professor 1",
-      photo: "https://github.com/profile.png",
-      description: "Aulas com o Professor 1",
-      value: 100
-    },
-    {
-      id: 2,
-      name: "Professor 2",
-      photo: "https://github.com/profile.png",
-      description: "Aulas com o Professor 2",
-      value: 100
-    },
-    {
-      id: 3,
-      name: "Professor 3",
-      photo: "https://github.com/profile.png",
-      description: "Aulas com o Professor 3",
-      value: 100
-    },
-    {
-      id: 4,
-      name: "Professor 4",
-      photo: "https://github.com/profile.png",
-      description: "Aulas com o Professor 4",
-      value: 100
-    },
-  ];
+  const {
+    teachers, 
+    data, 
+    setData, 
+    teacherSelected, 
+    setTeacherSelected, 
+    selectClass,
+    message,
+    setMessage
+  } = useIndex();
 
   return (
-    <Box sx={{backgroundColor: 'secondary.main'}}>
-      <List teachers={teachers}/>
-    </Box>
+    <div>
+      <Box sx={{backgroundColor: 'secondary.main'}}>
+        <List teachers={teachers} onSelect={teacher => setTeacherSelected(teacher)}/>
+      </Box>
+
+      <Dialog onClose={() => setTeacherSelected(null)} open={teacherSelected ? true : false} fullWidth PaperProps={{sx: {p: 5}}}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField 
+              label='Digite o nome'
+              type='text'
+              fullWidth
+              value={data.name}
+              onChange={(e) => setData({...data, name: e.target.value})}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField 
+              label='Digite o email'
+              type='text'
+              fullWidth
+              value={data.email}
+              onChange={(e) => setData({...data, email: e.target.value})}
+            />
+          </Grid>
+        </Grid>
+        
+        <DialogActions sx={{mt: 5}}>
+          <Button onClick={() => setTeacherSelected(null)}>Cancelar</Button>
+          <Button onClick={() => selectClass()}>Marcar</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar 
+        message={message} 
+        open={message.length > 0}
+        autoHideDuration={2500}
+        onClose={() => setMessage('')}
+      />
+    </div>
   )
 }
 

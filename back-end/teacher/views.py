@@ -23,4 +23,4 @@ class RegisterClassApiView(APIView):
             classroom.save()
             classroom_serializer = ClassSerialize(classroom, many=False)
             return Response(classroom_serializer.data, status=HTTP_201_CREATED)
-        return Response({"message": "Validation errors", "errors": serializer.errors}, status=HTTP_400_BAD_REQUEST)
+        return Response({"message": "Houveram erros de validação", "errors": serializer.errors}, status=HTTP_400_BAD_REQUEST)
